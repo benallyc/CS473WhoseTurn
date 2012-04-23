@@ -1,0 +1,84 @@
+//Implemented as a service call
+public String submitTurn(List<String> usernames, String categoryName)
+{
+       List<User> users = new ArrayList<User>();
+       // Get users based off username
+       Category category;
+       // Get category based off categoryName
+
+       User driver = findUser(users, category);
+
+       return driver.getUsername();
+}
+
+//my stuff
+public User findDriver(List<User> users, Category category)
+{
+       User driver;
+       String strategy;
+       // Get strategy based off category
+
+       switch(strategy)
+       {
+               case 'ratio':
+                       driver = driveRatioOnly(users, category);
+               case 'ratiowithpenalty':
+                       driver = driveRatioPenalty(users, category);
+
+
+       return driver;
+}
+
+
+public User driveRatioOnly(List<User> users, category) {
+       List<Double> ratioList;
+       List<String> turnItemsKeyStrings;
+       List<TurnItems> turnItems;
+       Integer tempTurnCount;
+       Integer tempSelectedCount;
+       for(int i = 0; i < users.size(); i++)
+       {
+               tempTurnCount = 0;
+               tempSelctedCount = 0;
+               turnItemsKeyStrings = users.index(i).getTurnItems;
+               for(int j = 0; j < turnItemsKeyStrings.size(); j++)
+               {
+					   PersistenceManager pm = PMF.get().getPersistenceManager();
+                       turnItems.add(pm.getObjectsById(TurnItem.class,
+					   KeyFactory.stringToKey(turnItemsKeyStrings.index(j))));
+               }
+
+               for(int j = 0; j < turnItems.size(); j++)
+               {
+                       if (turnItems.index(j).getCategoryKeyString.equals(category.getKeyString))
+                       {
+                               tempTurnCount++;
+                               if (turnItems.index(j).getSelected())
+                                       tempSelectedCount++;
+                       }
+               }
+
+               ratioList.add(tempSelectedCount/tempTurnCount);
+			   pm.close();
+       }
+
+       Integer index = 0;
+       Double tempCurRatio = ratioList.index(0);
+       Double tempRatio;
+
+       for(int i=1; i < ratioList.size(); i++)
+       {
+               tempRatio = ratioList.index(i);
+               if (tempRatio < tempCurRatio)
+               {
+                       tempCurRatio = tempRatio;
+                       index = i;
+               }
+       }
+
+       return users.index(i);
+	   }
+	   
+1) Least Recently Gone - Look at the people in the list and pick the person who has been the least recent to go. Randomly break ties.
+2) Lowest Ratio - Person who has the lowest ratio of "selected" to turns gone gets picked. Randomly break ties.
+3) Completely Random - Use random number generator to random pick from 1 - n. N is the person who goes. If multiple people need to handle this

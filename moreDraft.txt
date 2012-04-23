@@ -1,0 +1,44 @@
+public User lowestRatio(users, category){
+		List<Double> ratioList;
+		List<String> turnItemsKeyStrings;
+		List<TurnItems> turnItems;
+		Integer tempTurnCount;
+		Integer tempSelectedCount;
+		
+		for (int i = 0; i < user.size(); i++){
+			tempTurnCount = 0;
+			tempSelectedCount = 0;
+			turnItemsKeyStrings = user.index(i).getTurnItems;
+			
+			for (int j = 0; j < turnItemsKeyStrings.size(); j++){
+				PersistenceManage pm = PMF.get().getPersistenceManager();
+				turnItems.add(pm.getObjectsById(TurnItem.class,
+						   KeyFactory.stringToKey(turnItemsKeyStrings.index(j))));
+				}
+		for (int k = 0; k < turnItems.size(); k++){
+			if (turnItems.index(k).getCategoryKeyString.equals(category.getKeyString)){
+				tempTurnCount++;
+				if (turnItems.index(k).getSelected()){
+					tempSelectedCount++;
+					}
+				}
+			}
+		ratioList.add((Double)(tempSelectedCount/tempTurnCount));
+		pm.close();
+		}
+		
+		Integer index = 0;
+		Double tempCurrentRatio = ratioList.index(0);
+		Double tempRatio;
+		
+		for (int i = 1; i < ratioList.size(); i++){
+			tempRatio = ratioList.index(i);
+			
+			if (tempRatio < tempCurrentRatio){
+				tempCurrentRatio = tempRatio;
+				index = i;
+			}
+		}
+		
+		return users.index(i);
+		}
